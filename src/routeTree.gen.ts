@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TasksRouteImport } from './routes/tasks'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PresentationRouteImport } from './routes/presentation'
 import { Route as MeetingsRouteImport } from './routes/meetings'
 import { Route as EmailRouteImport } from './routes/email'
 import { Route as ChatRouteImport } from './routes/chat'
@@ -26,6 +27,11 @@ const TasksRoute = TasksRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PresentationRoute = PresentationRouteImport.update({
+  id: '/presentation',
+  path: '/presentation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MeetingsRoute = MeetingsRouteImport.update({
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/chat': typeof ChatRoute
   '/email': typeof EmailRoute
   '/meetings': typeof MeetingsRoute
+  '/presentation': typeof PresentationRoute
   '/profile': typeof ProfileRoute
   '/tasks': typeof TasksRoute
   '/api/chat': typeof ApiChatRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/chat': typeof ChatRoute
   '/email': typeof EmailRoute
   '/meetings': typeof MeetingsRoute
+  '/presentation': typeof PresentationRoute
   '/profile': typeof ProfileRoute
   '/tasks': typeof TasksRoute
   '/api/chat': typeof ApiChatRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/chat': typeof ChatRoute
   '/email': typeof EmailRoute
   '/meetings': typeof MeetingsRoute
+  '/presentation': typeof PresentationRoute
   '/profile': typeof ProfileRoute
   '/tasks': typeof TasksRoute
   '/api/chat': typeof ApiChatRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/email'
     | '/meetings'
+    | '/presentation'
     | '/profile'
     | '/tasks'
     | '/api/chat'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/email'
     | '/meetings'
+    | '/presentation'
     | '/profile'
     | '/tasks'
     | '/api/chat'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/chat'
     | '/email'
     | '/meetings'
+    | '/presentation'
     | '/profile'
     | '/tasks'
     | '/api/chat'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   ChatRoute: typeof ChatRoute
   EmailRoute: typeof EmailRoute
   MeetingsRoute: typeof MeetingsRoute
+  PresentationRoute: typeof PresentationRoute
   ProfileRoute: typeof ProfileRoute
   TasksRoute: typeof TasksRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/presentation': {
+      id: '/presentation'
+      path: '/presentation'
+      fullPath: '/presentation'
+      preLoaderRoute: typeof PresentationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/meetings': {
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChatRoute: ChatRoute,
   EmailRoute: EmailRoute,
   MeetingsRoute: MeetingsRoute,
+  PresentationRoute: PresentationRoute,
   ProfileRoute: ProfileRoute,
   TasksRoute: TasksRoute,
   ApiChatRoute: ApiChatRoute,
@@ -208,13 +229,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -52,7 +52,7 @@ export const Route = createFileRoute("/presentation")({
 
 type Slide = {
   id: string;
-  render: () => JSX.Element;
+  render: () => React.ReactElement;
 };
 
 function PresentationPage() {
